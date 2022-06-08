@@ -1,0 +1,30 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: jaguchi-self-service-bot
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: jaguchi-self-service-bot
+spec:
+  env:
+  - name: GITHUB_ACCESS_TOKEN
+    value: "${k8s.bindings.jaguchi-self-service-bot-config.github-access-token}"
+  build:
+    env:
+    - name: BP_JVM_VERSION
+      value: "17"
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+  source:
+    git:
+      url: https://github.com/tanzu-japan/jaguchi-self-service-bot
+      ref:
+        branch: main
+  serviceClaims:
+  - name: jaguchi-self-service-bot-config
+    ref:
+      apiVersion: v1
+      kind: Secret
+      name: jaguchi-self-service-bot-config

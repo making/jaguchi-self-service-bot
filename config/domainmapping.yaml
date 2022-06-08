@@ -1,0 +1,9 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: DomainMapping
+metadata:
+  name: jaguchi-self-service-bot.run.jaguchi.maki.lol
+spec:
+  ref:
+    name: jaguchi-self-service-bot
+    kind: Service
+    apiVersion: serving.knative.dev/v1
